@@ -86,7 +86,7 @@ def main():
                 st.experimental_set_query_params(logged_in="true")
                 st.write("欢迎, {}!".format(username))
                 # 跳转到指定的URL
-                st.markdown('<meta http-equiv="refresh" content="0; url=http://10.70.24.88:8501">', unsafe_allow_html=True)
+                st.markdown('<meta http-equiv="refresh" content="0; url=https://32ympeupr5rw4amdmt5ymi.streamlit.app">', unsafe_allow_html=True)
             else:
                 st.error(msg)
 
