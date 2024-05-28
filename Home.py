@@ -79,14 +79,15 @@ def main():
         username = st.text_input("用户名", key="login_username")
         password = st.text_input("密码", type='password', key="login_password")
 
-        if st.button("登录"):
+                if st.button("登录"):
             success, msg = login(username, password)
+            # 如果登录成功
             if success:
-                st.success(msg)
-                st.experimental_set_query_params(logged_in="true")
-                st.write("欢迎, {}!".format(username))
-                # 跳转到指定的URL
-                st.markdown('<meta http-equiv="refresh" content="0; url=https://32ympeupr5rw4amdmt5ymi.streamlit.app/">', unsafe_allow_html=True)
+                st.success(msg)  # 显示成功消息
+                st.experimental_set_query_params(logged_in="true")  # 设置一个查询参数表示用户已登录
+                st.write("欢迎, {}!".format(username))  # 显示欢迎消息
+                # 创建一个超链接
+                st.markdown('[点击这里](https://32ympeupr5rw4amdmt5ymi.streamlit.app/)')
             else:
                 st.error(msg)
 
