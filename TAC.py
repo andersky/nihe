@@ -3,7 +3,7 @@ import pandas as pd
 import pickle
 
 # Load the model
-with open('D:/HuaweiMoveData/Users/zero/Desktop/Titantic.pkl', 'rb') as f:
+with open('Titantic.pkl', 'rb') as f:
     model = pickle.load(f)
 
 # Define the prediction function
