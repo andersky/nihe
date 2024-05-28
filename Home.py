@@ -79,7 +79,7 @@ def main():
         username = st.text_input("用户名", key="login_username")
         password = st.text_input("密码", type='password', key="login_password")
 
-                if st.button("登录"):
+        if st.button("登录"):
             success, msg = login(username, password)
             # 如果登录成功
             if success:
