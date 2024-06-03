@@ -87,7 +87,7 @@ def main():
                 st.experimental_set_query_params(logged_in="true")  # 设置一个查询参数表示用户已登录
                 st.write("欢迎, {}!".format(username))  # 显示欢迎消息
                 # 创建一个超链接
-                st.markdown('[点击这里](https://32ympeupr5rw4amdmt5ymi.streamlit.app/)')
+                st.markdown('[点击这里](https://gkpbdn3hhny7s7udue38lw.streamlit.app/)')
             else:
                 st.error(msg)
 
