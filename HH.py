@@ -18,8 +18,6 @@ def get_zh_font():
     return None
 
 zh_font = get_zh_font()
-if zh_font is None:
-    st.warning("未找到中文字体，使用默认字体。")
 
 def process_data(file):
     data = pd.read_csv(file, sep='\s+', header=None, names=['time', '1', 'correlation', '2'])
