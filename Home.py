@@ -35,10 +35,12 @@ def login(username, password):
     elif st.session_state.users_db[username] != password:
         return False, "密码错误"
     else:
+        st.session_state.logged_in = True
+        st.session_state.username = username
         return True, "登录成功"
 
 def main():
-    # 添加背景图片的CSS
+    # 添加背景图片和自定义样式的CSS
     st.markdown(
         """
         <style>
@@ -47,6 +49,28 @@ def main():
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
+        }
+        .custom-link {
+            font-weight: bold; /* 字体粗细改为 bold */
+            font-size: 24px; /* 调整“点击这里”的字体大小 */
+            text-decoration: none;
+            color: red; /* 链接文字颜色 */
+        }
+        .custom-link:hover {
+            color: darkred; /* 鼠标悬停时的链接颜色 */
+        }
+        .success-message {
+            color: green;
+            font-size: 24px; /* 调整成功消息的字体大小 */
+            font-weight: bold;
+        }
+        .welcome-message {
+            font-size: 24px; /* 调整欢迎消息的字体大小 */
+            font-weight: bold;
+        }
+        .input-label {
+            font-size: 20px; /* 调整输入标签的字体大小 */
+            font-weight: bold;
         }
         </style>
         """,
@@ -60,9 +84,9 @@ def main():
 
     if choice == "注册":
         st.subheader("注册")
-        username = st.text_input("用户名", key="register_username")
-        password = st.text_input("密码", type='password', key="register_password")
-        confirm_password = st.text_input("确认密码", type='password', key="confirm_password")
+        username = st.text_input("用户名", key="register_username", placeholder="用户名", help="请输入用户名")
+        password = st.text_input("密码", type='password', key="register_password", placeholder="密码", help="请输入密码")
+        confirm_password = st.text_input("确认密码", type='password', key="confirm_password", placeholder="确认密码", help="请再次输入密码")
 
         if st.button("注册"):
             if password == confirm_password:
@@ -76,24 +100,27 @@ def main():
 
     elif choice == "登录":
         st.subheader("登录")
-        username = st.text_input("用户名", key="login_username")
-        password = st.text_input("密码", type='password', key="login_password")
+        username = st.text_input("用户名", key="login_username", placeholder="用户名", help="请输入用户名")
+        password = st.text_input("密码", type='password', key="login_password", placeholder="密码", help="请输入密码")
 
         if st.button("登录"):
             success, msg = login(username, password)
             # 如果登录成功
             if success:
-                st.success(msg)  # 显示成功消息
-                st.experimental_set_query_params(logged_in="true")  # 设置一个查询参数表示用户已登录
-                st.write("欢迎, {}!".format(username))  # 显示欢迎消息
-                # 创建一个超链接
-                st.markdown('[点击这里](https://7jsaxdnk2axrpxknnrqrrz.streamlit.app/)')
+                st.markdown(f'<div class="success-message">{msg}</div>', unsafe_allow_html=True)  # 显示成功消息
+                st.markdown(f'<div class="welcome-message">欢迎, {username}!</div>', unsafe_allow_html=True)  # 显示欢迎消息
+                st.balloons()  # 显示气球效果
+                # 创建一个超链接，添加自定义样式
+                st.markdown(
+                    '<a href="https://32ympeupr5rw4amdmt5ymi.streamlit.app/" class="custom-link">请点击这里</a>',
+                    unsafe_allow_html=True
+                )
             else:
                 st.error(msg)
 
     # Debug 信息
-    #st.sidebar.subheader("Debug 信息")
-    #st.sidebar.write("用户数据库:", st.session_state.users_db)
+    # st.sidebar.subheader("Debug 信息")
+    # st.sidebar.write("用户数据库:", st.session_state.users_db)
 
 if __name__ == '__main__':
     main()
