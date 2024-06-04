@@ -102,7 +102,7 @@ def create_plots(t, data_y):
         val_losses.append(val_loss.item())
 
     # 设置字体为Times New Roman
-    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.family'] = 'DejaVu Serif'
 
     # 绘制真实曲线
     plt.figure(figsize=(10, 5))
