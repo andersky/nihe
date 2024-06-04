@@ -41,17 +41,14 @@ def convert_to_numbers(x):
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.fc1 = nn.Linear(1, 1)
-        self.fc2 = nn.Linear(1, 100)
-        self.fc3 = nn.Linear(100, 50)
-        self.fc6 = nn.Linear(50, 1)
-        self.dropout = nn.Dropout(0.5)
+        self.fc1 = nn.Linear(1, 6)
+        self.fc2 = nn.Linear(6, 46)
+        self.fc6 = nn.Linear(46, 1)
         self.relu = nn.ReLU()
 
     def forward(self, x):
         x = self.relu(self.fc1(x))
         x = self.relu(self.fc2(x))
-        x = self.relu(self.fc3(x))
         x = self.fc6(x)
         return x
 
@@ -64,8 +61,8 @@ def process_data(uploaded_file):
 
     t = convert_to_numbers(data_t)
     t = np.array(t, dtype=float)
-    t = t[:-200]
-    data_y = data_y[:-200]
+    t = t[:1500]
+    data_y = data_y[:1500]
 
     return t, data_y
 
@@ -76,8 +73,17 @@ def create_plots(t, data_y):
     y_tensor = torch.tensor(data_y, dtype=torch.float32).clone().detach().unsqueeze(1)
 
     model = Net()
-    criterion = nn.MSELoss()
+
+    def custom_loss(output, target, first_point_target, first_point_output):
+        loss = nn.MSELoss()(output, target)
+        penalty = nn.MSELoss()(first_point_output, first_point_target)
+        return loss + penalty
+
     optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+    #seed = 50
+    #np.random.seed(seed)
+    #torch.manual_seed(seed)
 
     t_train, t_val, y_train, y_val = train_test_split(t_tensor, y_tensor, test_size=0.2, random_state=42)
 
@@ -89,19 +95,20 @@ def create_plots(t, data_y):
         model.train()
         optimizer.zero_grad()
         output = model(t_train)
-        loss = criterion(output, y_train)
+        first_point_output = model(torch.tensor([[0.0]]))
+        loss = custom_loss(output, y_train, torch.tensor([[1.0]]), first_point_output)
         loss.backward()
         optimizer.step()
 
         model.eval()
         with torch.no_grad():
             val_output = model(t_val)
-            val_loss = criterion(val_output, y_val)
+            val_loss = custom_loss(val_output, y_val, torch.tensor([[1.0]]), first_point_output)
 
         train_losses.append(loss.item())
         val_losses.append(val_loss.item())
 
-    # 设置字体为Times New Roman
+    # 设置字体为 DejaVu Serif
     plt.rcParams['font.family'] = 'DejaVu Serif'
 
     # 绘制真实曲线
