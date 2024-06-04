@@ -112,7 +112,7 @@ def main():
                 st.balloons()  # 显示气球效果
                 # 创建一个超链接，添加自定义样式
                 st.markdown(
-                    '<a href="https://32ympeupr5rw4amdmt5ymi.streamlit.app/" class="custom-link">请点击这里</a>',
+                    '<a href="https://7jsaxdnk2axrpxknnrqrrz.streamlit.app/" class="custom-link">请点击这里</a>',
                     unsafe_allow_html=True
                 )
             else:
